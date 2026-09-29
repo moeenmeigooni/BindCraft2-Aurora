@@ -11,6 +11,25 @@ marked in the files, and the original license is preserved. The BindCraft2
 license permits source redistribution for users to install and run themselves;
 it does not permit offering the software as a hosted service.
 
+### Quick installation on Aurora
+
+Run these commands on an Aurora login node. Keep the checkout and environment
+on shared project storage; change `FRAME-IDP` if your allocation uses another
+project directory. The installer loads Aurora's framework and downloads the
+AlphaFold weights by default.
+
+```bash
+export AURORA_PROJECT_ROOT="/lus/flare/projects/FRAME-IDP/${USER}"
+mkdir -p "$AURORA_PROJECT_ROOT"
+cd "$AURORA_PROJECT_ROOT"
+git clone https://github.com/moeenmeigooni/BindCraft2-Aurora.git
+cd BindCraft2-Aurora
+bash aurora/bootstrap_aurora.sh
+```
+
+The installer runs its oneAPI self-check before returning. For the XPU smoke
+job and first bounded design, follow [Aurora setup and run instructions](aurora/README.md).
+
 **Design protein binders around the biology of your experiment.**
 
 BC2 brings de novo miniproteins, scaffolded binders, cyclic peptides and multistate design into one workflow. Describe your target, choose the kind of binder you want, and add properties that matter for your experiment. Named presets supply the design settings and acceptance filters; you can adjust individual settings when needed.
