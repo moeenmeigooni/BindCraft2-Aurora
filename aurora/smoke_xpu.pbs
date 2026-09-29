@@ -1,0 +1,29 @@
+#!/bin/bash -l
+#PBS -A FRAME-IDP
+#PBS -q debug
+#PBS -N bindcraft2-xpu-smoke
+#PBS -l select=1
+#PBS -l place=scatter
+#PBS -l walltime=00:15:00
+#PBS -l filesystems=flare
+#PBS -j oe
+
+set -eo pipefail
+
+repo_dir="${BINDCRAFT2_REPO:-${PBS_O_WORKDIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}}"
+project_root="${AURORA_PROJECT_ROOT:-/lus/flare/projects/FRAME-IDP/${USER:-${LOGNAME:-user}}}"
+env_prefix="${BINDCRAFT2_AURORA_ENV:-${project_root}/envs/bindcraft2-aurora}"
+
+cd "${repo_dir}"
+set +u
+module load frameworks
+set -u
+source aurora/runtime_env.sh "${env_prefix}"
+
+# One BC2 process per physical Aurora tile.  Never set a physical tile number
+# through JAX_ONEAPI_VISIBLE_DEVICES; the endpoint mask below makes it local 0.
+export ZE_FLAT_DEVICE_HIERARCHY=FLAT
+export ZE_AFFINITY_MASK="${ZE_AFFINITY_MASK:-0}"
+export JAX_ONEAPI_VISIBLE_DEVICES=0
+
+"${env_prefix}/bin/python" aurora/smoke_xpu.py

@@ -1,0 +1,42 @@
+#!/bin/bash -l
+#PBS -A FRAME-IDP
+#PBS -q prod
+#PBS -N bindcraft2-pdl1
+#PBS -l select=1
+#PBS -l place=scatter
+#PBS -l walltime=02:00:00
+#PBS -l filesystems=flare
+#PBS -j oe
+
+# A bounded real-design starter. It uses a single Aurora tile and keeps both
+# campaign output and runtime state off the user's home directory.
+set -eo pipefail
+
+repo_dir="${BINDCRAFT2_REPO:-${PBS_O_WORKDIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}}"
+project_root="${AURORA_PROJECT_ROOT:-/lus/flare/projects/FRAME-IDP/${USER:-${LOGNAME:-user}}}"
+env_prefix="${BINDCRAFT2_AURORA_ENV:-${project_root}/envs/bindcraft2-aurora}"
+project_folder="${BINDCRAFT2_PROJECT_FOLDER:-${project_root}/bindcraft2-runs/pdl1-${PBS_JOBID}}"
+extra_setting="${BINDCRAFT2_EXTRA_SET:-}"
+
+cd "${repo_dir}"
+set +u
+module load frameworks
+set -u
+source aurora/runtime_env.sh "${env_prefix}"
+
+# Endpoint affinity maps the allocated physical tile to oneAPI device 0.
+export ZE_FLAT_DEVICE_HIERARCHY=FLAT
+export ZE_AFFINITY_MASK="${ZE_AFFINITY_MASK:-0}"
+export JAX_ONEAPI_VISIBLE_DEVICES=0
+
+mkdir -p "${project_folder}"
+extra_arguments=()
+if [[ -n "${extra_setting}" ]]; then
+  extra_arguments=(--set "${extra_setting}")
+fi
+"${env_prefix}/bin/bindcraft" design examples/pdl1.json \
+  --set "project_folder=${project_folder}" \
+  --set 'max_trajectories=1' \
+  --set 'number_of_final_designs=1' \
+  --set 'workers_per_gpu=1' \
+  "${extra_arguments[@]}"
