@@ -11,7 +11,7 @@ fetch_weights=true
 
 usage() {
   cat <<'EOF'
-Usage: aurora/bootstrap_aurora.sh [--env PREFIX] [--no-weights]
+Usage: aurora/install_aurora.sh [--env PREFIX] [--no-weights]
 
 Creates a Python 3.12+ virtual environment and installs BindCraft2 with its
 JAX oneAPI extra.  By default it also downloads the 5.3 GB AlphaFold parameter

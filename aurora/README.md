@@ -62,7 +62,7 @@ From the checkout root, install on an Aurora login node with:
 
 ```bash
 export AURORA_PROJECT_ROOT="/lus/flare/projects/FRAME-IDP/${USER}"
-bash aurora/bootstrap_aurora.sh
+bash aurora/install_aurora.sh
 ```
 
 The default weight path is project storage under

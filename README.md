@@ -24,7 +24,7 @@ mkdir -p "$AURORA_PROJECT_ROOT"
 cd "$AURORA_PROJECT_ROOT"
 git clone https://github.com/moeenmeigooni/BindCraft2-Aurora.git
 cd BindCraft2-Aurora
-bash aurora/bootstrap_aurora.sh
+bash aurora/install_aurora.sh
 ```
 
 The installer runs its oneAPI self-check before returning. For the XPU smoke
