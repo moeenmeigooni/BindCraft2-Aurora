@@ -69,13 +69,14 @@ def main() -> None:
     # Aurora fallback must compile and preserve stable sorting semantics.
     sort_input = jnp.asarray(((3, 1, 1, 2), (4, -1, 2, 2)), dtype=jnp.float32)
     sort_order = jax.jit(stable_argsort)(sort_input)
+    expected_sort_order = jnp.asarray(((1, 2, 3, 0), (1, 2, 3, 0)))
     jax.block_until_ready((basis, inverse))
     if (float(product.sum()) != 3920.0
             or not bool(jnp.allclose(recovered_rotations, rotations, atol=1e-5))
             or not bool(jnp.allclose(fitted_rotation, alignment_rotation, atol=1e-4))
             or not bool(jnp.allclose(basis.T @ basis, jnp.eye(4), atol=1e-4))
             or not bool(jnp.allclose(positive_matrix @ inverse, jnp.eye(4), atol=1e-4))
-            or not bool(jnp.array_equal(sort_order, jnp.asarray(((1, 2, 3, 0), (1, 2, 3, 0))))):
+            or not bool(jnp.array_equal(sort_order, expected_sort_order))):
         raise RuntimeError('oneAPI linear algebra smoke result was invalid')
     print(f'backend={jax.default_backend()}')
     print(f'devices={devices}')
