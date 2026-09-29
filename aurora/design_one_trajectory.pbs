@@ -20,7 +20,7 @@ extra_setting="${BINDCRAFT2_EXTRA_SET:-}"
 
 cd "${repo_dir}"
 set +u
-module load frameworks
+module load "${AURORA_JAX_ONEAPI_MODULE:-oneapi/release/2025.3.1}"
 set -u
 source aurora/runtime_env.sh "${env_prefix}"
 

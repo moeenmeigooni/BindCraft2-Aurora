@@ -14,6 +14,15 @@ PyTorch workflow, so Intel Extension for PyTorch is not applicable. BC2's
 declared `jax[oneapi]` extra is the intended accelerator route. Run the
 included XPU smoke gate on an allocated tile before starting a campaign.
 
+## PE 26.1810 runtime compatibility
+
+The Intel JAX plugin wheel uses the oneAPI 2025 runtime ABI. On Aurora's
+current PE 26.181.0 image, load the rebuilt PE 26.26.0 runtime with
+`module load oneapi/release/2025.3.1` before running JAX workflows.
+`aurora/runtime_env.sh` loads it by default; set `AURORA_JAX_ONEAPI_MODULE` to
+override the module name. The launcher also adds the venv's `lib` directory so
+the plugin can load the MKL/SYCL libraries installed with its Python packages.
+
 The overlay makes three deliberate changes:
 
 - Pins JAX 0.11.1 and Intel's matching 0.11.1-dev oneAPI PJRT plugin.  This is

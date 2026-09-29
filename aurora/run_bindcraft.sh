@@ -17,7 +17,7 @@ if ! command -v module >/dev/null 2>&1; then
   exit 1
 fi
 set +u
-module load frameworks
+module load "${AURORA_JAX_ONEAPI_MODULE:-oneapi/release/2025.3.1}"
 set -u
 source "${script_dir}/runtime_env.sh" "${env_prefix}"
 

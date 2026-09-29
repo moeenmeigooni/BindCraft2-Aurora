@@ -16,7 +16,7 @@ env_prefix="${BINDCRAFT2_AURORA_ENV:-${project_root}/envs/bindcraft2-aurora}"
 
 cd "${repo_dir}"
 set +u
-module load frameworks
+module load "${AURORA_JAX_ONEAPI_MODULE:-oneapi/release/2025.3.1}"
 set -u
 source aurora/runtime_env.sh "${env_prefix}"
 
