@@ -1,5 +1,12 @@
 # BindCraft2 on ALCF Aurora
 
+## Clone this Aurora port
+
+```bash
+git clone https://github.com/moeenmeigooni/BindCraft2-Aurora.git
+cd BindCraft2-Aurora
+```
+
 ## Port status
 
 This is an Aurora/XPU port. It is a JAX/AlphaFold/ProteinMPNN workflow, not a
